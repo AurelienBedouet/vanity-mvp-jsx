@@ -1,7 +1,7 @@
-import Image from "next/image";
 import React from "react";
 import FormWrapper from "../FormWrapper";
-import ProfilePicture from "../ProfilePicture";
+import ProfilePicture from "../../ProfilePicture";
+import Image from "next/image";
 
 const FirstStep = ({ username, avatar, age, sexe, updateFields }) => {
   return (
@@ -15,8 +15,10 @@ const FirstStep = ({ username, avatar, age, sexe, updateFields }) => {
         </label>
         <input
           type="text"
-          value={username}
-          onChange={e => updateFields({ username: e.target.value })}
+          value={username || ""}
+          onChange={e =>
+            updateFields(prev => ({ ...prev, username: e.target.value }))
+          }
           autoFocus
           required
           id="username"
@@ -33,8 +35,10 @@ const FirstStep = ({ username, avatar, age, sexe, updateFields }) => {
         </label>
         <input
           type="number"
-          value={age}
-          onChange={e => updateFields({ age: e.target.value })}
+          value={age || ""}
+          onChange={e =>
+            updateFields(prev => ({ ...prev, age: e.target.value }))
+          }
           min="1"
           required
           id="age"
@@ -50,9 +54,11 @@ const FirstStep = ({ username, avatar, age, sexe, updateFields }) => {
           Sexe
         </label>
         <select
-          value={sexe}
+          value={sexe || ""}
           id="sexe"
-          onChange={e => updateFields({ sexe: e.target.value })}
+          onChange={e =>
+            updateFields(prev => ({ ...prev, sexe: e.target.value }))
+          }
           required
           className="w-full xs:w-[80%] rounded"
         >
@@ -65,7 +71,22 @@ const FirstStep = ({ username, avatar, age, sexe, updateFields }) => {
         </select>
       </div>
 
-      <ProfilePicture avatar={avatar} updateFields={updateFields} />
+      <div className="py-4 w-full flex justify-around items-center">
+        <span className="block text-center">Profile picture</span>
+        {avatar ? (
+          <Image
+            src={avatar}
+            alt="profile picture"
+            width={64}
+            height={64}
+            className="aspect-square rounded-full"
+          />
+        ) : (
+          <div className="w-16 h-16 border border-gray-500 bg-white rounded-full" />
+        )}
+      </div>
+
+      <ProfilePicture avatar={avatar} updateAvatar={updateFields} />
     </FormWrapper>
   );
 };

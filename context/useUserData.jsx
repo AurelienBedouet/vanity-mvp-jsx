@@ -6,7 +6,7 @@ import { auth, db } from "../utils/firebase";
 // Custom hook to read  auth record and user profile doc
 const useUserData = () => {
   const [user] = useAuthState(auth);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     let unsubscribe;
@@ -16,7 +16,7 @@ const useUserData = () => {
         setUserData(doc.data()?.basicInfo);
       });
     } else {
-      setUserData(null);
+      setUserData({});
     }
 
     return unsubscribe;

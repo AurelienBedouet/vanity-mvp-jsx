@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import ProgressBar from "../../ProgressBar";
+import ProgressBar from "../ProgressBar";
 import { v4 } from "uuid";
-import { storage } from "../../../utils/firebase";
+import { storage } from "../../utils/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-const Upload = ({ updateFields }) => {
+const Upload = ({ updateAvatar }) => {
   const [progressUploadImage, setProgressUploadImage] = useState(0);
 
   const onUploadImage = async e => {
@@ -24,23 +24,13 @@ const Upload = ({ updateFields }) => {
         setProgressUploadImage(
           Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
         );
-        console.log("Upload is " + progressUploadImage + "% done");
-        console.log(progressUploadImage);
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-        }
       },
       error => {
         console.error(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(downloadURL =>
-          updateFields({ avatar: downloadURL })
+          updateAvatar(prev => ({ ...prev, avatar: downloadURL }))
         );
       }
     );
@@ -50,7 +40,7 @@ const Upload = ({ updateFields }) => {
     <div className="pt-6 flex flex-col items-center gap-4">
       <label
         htmlFor="imageUpload"
-        className="app__buttons cursor-pointer text-center w-[80%]"
+        className="app__buttons cursor-pointer text-center w-1/2"
       >
         Upload Image
       </label>

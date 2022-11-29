@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { imageOptions } from "../data";
-import TabContent from "../../Tab/TabContent";
+import React, { useState } from "react";
+import { imageOptions } from "../../utils/data";
+import TabContent from "../Tab/TabContent";
 import Image from "next/image";
 import Upload from "./Upload";
 import Link from "./Link";
 import Gallery from "./Gallery";
 
-const ProfilePicture = ({ avatar, updateFields }) => {
+const ProfilePicture = ({ avatar, updateAvatar }) => {
   const [currentTab, setCurrentTab] = useState("option1");
 
   const handleTabClick = e => {
@@ -16,21 +16,6 @@ const ProfilePicture = ({ avatar, updateFields }) => {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="py-4 w-full flex justify-around items-center">
-        <span className="block text-center">Profile picture</span>
-        {avatar ? (
-          <Image
-            src={avatar}
-            alt={username || "profile picture"}
-            width={64}
-            height={64}
-            className="aspect-square rounded-full"
-          />
-        ) : (
-          <div className="w-16 h-16 border border-gray-500 bg-white rounded-full" />
-        )}
-      </div>
-
       {/* Tabs */}
       <div className="flex justify-between w-full">
         {imageOptions.map(tab => (
@@ -49,21 +34,15 @@ const ProfilePicture = ({ avatar, updateFields }) => {
       {/* Tabs Content */}
       <div className="w-full">
         <TabContent id="option1" currentTab={currentTab}>
-          <Upload updateFields={updateFields} />
+          <Upload updateAvatar={updateAvatar} />
         </TabContent>
         <TabContent id="option2" currentTab={currentTab}>
-          <Link updateFields={updateFields} />
+          <Link updateAvatar={updateAvatar} />
         </TabContent>
         <TabContent id="option3" currentTab={currentTab}>
-          <Gallery updateFields={updateFields} />
+          <Gallery updateAvatar={updateAvatar} />
         </TabContent>
       </div>
-
-      {avatar ? (
-        <p className="text-green-500 mt-2">Image successfully selected.</p>
-      ) : (
-        <p className="text-red-500 mt-2">No images selected yet.</p>
-      )}
     </div>
   );
 };

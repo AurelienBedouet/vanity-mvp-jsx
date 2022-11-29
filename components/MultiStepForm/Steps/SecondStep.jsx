@@ -13,8 +13,10 @@ const SecondStep = ({ city, zone, profession, ethnicity, updateFields }) => {
         </label>
         <input
           type="text"
-          value={city}
-          onChange={e => updateFields({ city: e.target.value })}
+          value={city || ""}
+          onChange={e =>
+            updateFields(prev => ({ ...prev, city: e.target.value }))
+          }
           autoFocus
           required
           id="city"
@@ -30,9 +32,11 @@ const SecondStep = ({ city, zone, profession, ethnicity, updateFields }) => {
           Zone
         </label>
         <select
-          value={zone}
+          value={zone || ""}
           id="zone"
-          onChange={e => updateFields({ zone: e.target.value })}
+          onChange={e =>
+            updateFields(prev => ({ ...prev, zone: e.target.value }))
+          }
           required
           className="w-full xs:w-[80%] rounded"
         >
@@ -53,9 +57,11 @@ const SecondStep = ({ city, zone, profession, ethnicity, updateFields }) => {
           Profession
         </label>
         <select
-          value={profession}
+          value={profession || ""}
           id="profession"
-          onChange={e => updateFields({ profession: e.target.value })}
+          onChange={e =>
+            updateFields(prev => ({ ...prev, profession: e.target.value }))
+          }
           required
           className="w-full xs:w-[80%] rounded"
         >
@@ -78,9 +84,11 @@ const SecondStep = ({ city, zone, profession, ethnicity, updateFields }) => {
           ethnicity
         </label>
         <select
-          value={ethnicity}
+          value={ethnicity || ""}
           id="ethnicity"
-          onChange={e => updateFields({ ethnicity: e.target.value })}
+          onChange={e =>
+            updateFields(prev => ({ ...prev, ethnicity: e.target.value }))
+          }
           required
           className="w-full xs:w-[80%] rounded"
         >

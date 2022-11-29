@@ -43,13 +43,13 @@ const Navbar = () => {
             </button>
             <Link href="/profile">
               <Image
-                src={userData?.avatar || user?.photoURL || "/hacker.png"}
+                src={userData?.avatar || user?.photoURL || "/assets/hacker.png"}
                 width={40}
                 height={40}
                 alt={
                   userData?.username || user?.displayName || "profile picture"
                 }
-                className="rounded-full cursor-pointer"
+                className="aspect-square rounded-full cursor-pointer"
               />
             </Link>
           </ul>
