@@ -15,6 +15,9 @@ const UpdateForm = ({ setShow }) => {
   const { user, userData } = useContext(UserContext);
 
   const [updatedData, setUpdatedData] = useState(userData);
+  const [usernameValue, setUsernameValue] = useState(userData.username);
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
+  const [usernameMessage, setUsernameMessage] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [edit1, setEdit1] = useState(false);
   const [edit2, setEdit2] = useState(false);
@@ -37,12 +40,53 @@ const UpdateForm = ({ setShow }) => {
 
   useEffect(() => {
     if (
-      updatedData.character.isValid === true &&
-      updatedData.hobbies.isValid === true
+      updatedData?.character?.isValid === true &&
+      updatedData?.hobbies?.isValid === true
     ) {
       setDisabled(false);
     } else setDisabled(true);
-  }, [updatedData.character.isValid, updatedData.hobbies.isValid]);
+  }, [updatedData?.character?.isValid, updatedData?.hobbies?.isValid]);
+
+  const onChangeUsername = e => {
+    const val = e.target.value.toLowerCase();
+    console.log(val);
+    const re = /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+
+    // Only set form value if length is < 3 OR it passes regex
+    // if (usernameValue === userData.username) {
+    //   setIsUsernameValid(true);
+    //   return;
+    // }
+
+    if (val.length > 3 && re.test(val)) {
+      setUsernameValue(val);
+      setIsUsernameValid(true);
+    } else {
+      setUsernameValue(val);
+      setIsUsernameValid(false);
+      console.log("Incorrect username");
+    }
+  };
+
+  useEffect(() => {
+    if (usernameValue === userData.username) {
+      setIsUsernameValid(true);
+      setUsernameMessage("Correct Format.");
+    } else if (!isUsernameValid && usernameValue.length > 3) {
+      setUsernameMessage("Incorrect Format.");
+    } else if (usernameValue.length < 4) {
+      setUsernameMessage("Username must be 4 characters minimum.");
+    } else setUsernameMessage("Correct Format.");
+  }, [isUsernameValid, userData.username, usernameValue]);
+
+  useEffect(() => {
+    if (isUsernameValid) {
+      setUpdatedData(prev => ({ ...prev, username: usernameValue }));
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [isUsernameValid, setUpdatedData, usernameValue]);
 
   return (
     <>
@@ -50,7 +94,7 @@ const UpdateForm = ({ setShow }) => {
         <form onSubmit={submitForm} className="flex flex-col gap-4">
           {/* Profile Picture */}
           <div className="w-full flex items-center justify-between xs:justify-start gap-2 xs:gap-4 sm:gap-8">
-            <span className="block xs:min-w-[100px] font-semibold">
+            <span className="block xs:min-w-[96px] font-semibold">
               Profile picture
             </span>
             {updatedData.avatar ? (
@@ -84,25 +128,46 @@ const UpdateForm = ({ setShow }) => {
           {/* Username / Age / Sexe */}
           <div className="flex flex-col gap-4">
             {/* Username */}
-            <div className="w-full flex items-center">
-              <label htmlFor="username" className="min-w-[100px] font-semibold">
-                Username
-              </label>
-              <input
-                value={updatedData?.username || ""}
-                onChange={e =>
-                  setUpdatedData({ ...updatedData, username: e.target.value })
-                }
-                autoFocus
-                type="text"
-                id="username"
-                className="w-full rounded"
-              />
+            <div className="w-full flex flex-col">
+              <div className="w-full flex items-center">
+                <label
+                  htmlFor="username"
+                  className="min-w-[96px] font-semibold"
+                >
+                  Username
+                </label>
+                {/* <input
+                  value={updatedData?.username || ""}
+                  onChange={e =>
+                    setUpdatedData({ ...updatedData, username: e.target.value })
+                  }
+                  autoFocus
+                  type="text"
+                  id="username"
+                  className="w-full rounded"
+                /> */}
+                <input
+                  type="text"
+                  value={usernameValue || ""}
+                  onChange={onChangeUsername}
+                  autoFocus
+                  required
+                  id="username"
+                  className="w-full rounded"
+                />
+              </div>
+              <p
+                className={`pt-2 xs:ml-24 text-center ${
+                  isUsernameValid ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {usernameMessage}
+              </p>
             </div>
 
             {/* Age */}
             <div className="w-full flex items-center">
-              <label htmlFor="age" className="min-w-[100px] font-semibold">
+              <label htmlFor="age" className="min-w-[96px] font-semibold">
                 Age
               </label>
               <input
@@ -119,7 +184,7 @@ const UpdateForm = ({ setShow }) => {
 
             {/* Sexe */}
             <div className="w-full flex items-center">
-              <label htmlFor="sexe" className="min-w-[100px] font-semibold">
+              <label htmlFor="sexe" className="min-w-[96px] font-semibold">
                 Sexe
               </label>
               <select
@@ -144,7 +209,7 @@ const UpdateForm = ({ setShow }) => {
           <div className="flex flex-col gap-4">
             {/* City */}
             <div className="w-full flex items-center">
-              <label htmlFor="city" className="min-w-[100px] font-semibold">
+              <label htmlFor="city" className="min-w-[96px] font-semibold">
                 City
               </label>
               <input
@@ -161,7 +226,7 @@ const UpdateForm = ({ setShow }) => {
 
             {/* Zone */}
             <div className="w-full flex items-center">
-              <label htmlFor="zone" className="min-w-[100px] font-semibold">
+              <label htmlFor="zone" className="min-w-[96px] font-semibold">
                 Zone
               </label>
               <select
@@ -189,7 +254,7 @@ const UpdateForm = ({ setShow }) => {
             <div className="w-full flex items-center">
               <label
                 htmlFor="profession"
-                className="min-w-[100px] font-semibold"
+                className="min-w-[96px] font-semibold"
               >
                 Profession
               </label>
@@ -215,10 +280,7 @@ const UpdateForm = ({ setShow }) => {
 
             {/* Ethnicity */}
             <div className="w-full flex items-center">
-              <label
-                htmlFor="ethnicity"
-                className="min-w-[100px] font-semibold"
-              >
+              <label htmlFor="ethnicity" className="min-w-[96px] font-semibold">
                 ethnicity
               </label>
               <select

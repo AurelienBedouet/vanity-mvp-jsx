@@ -3,6 +3,8 @@ import MultiStepForm from "../../components/MultiStepForm";
 import UpdateProfile from "./UpdateProfile";
 import { UserContext } from "../../context/UserContext";
 import { AiOutlineClose } from "react-icons/ai";
+import { GoCalendar } from "react-icons/go";
+import moment from "moment/moment";
 
 const Profile = () => {
   const { userData } = useContext(UserContext);
@@ -16,7 +18,18 @@ const Profile = () => {
     <div>
       {userData ? (
         <>
-          <h1 className="my-8">Your Profile</h1>
+          <div className="flex items-center justify-between gap-4 mb-8">
+            <h1 className="text-2xl font-semibold text-gray-700">
+              Your Profile
+            </h1>
+            <div className="flex items-center gap-8 bg-gray-500 text-white max-w-max py-2 px-3 rounded shadow-lg">
+              <span>{userData.username}</span>
+              <span className="flex items-center gap-4">
+                <GoCalendar size={24} /> Joined in{" "}
+                {moment(userData.createdAt).format("MMM YYYY")}
+              </span>
+            </div>
+          </div>
           <button onClick={toggleShow} type="button" className="app__buttons">
             Update profile
           </button>

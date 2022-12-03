@@ -3,7 +3,7 @@ import FormWrapper from "../FormWrapper";
 
 const SecondStep = ({ city, zone, profession, ethnicity, updateFields }) => {
   return (
-    <FormWrapper title="Address">
+    <FormWrapper title="Profile 2">
       <div className="flex flex-col xs:flex-row items-center justify-between w-full">
         <label
           htmlFor="city"

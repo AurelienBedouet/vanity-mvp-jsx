@@ -1,22 +1,3 @@
-export const INITIAL_DATA = {
-  username: "",
-  avatar: "",
-  age: "",
-  sexe: "",
-  city: "",
-  zone: "",
-  profession: "",
-  ethnicity: "",
-  character: {
-    options: [],
-    isValid: false,
-  },
-  hobbies: {
-    options: [],
-    isValid: false,
-  },
-};
-
 export const avatars = [
   {
     id: "avatar1",
